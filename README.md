@@ -13,20 +13,20 @@ validated.
 
 ```php
 use AdamTheHutt\SanitizedRequests\SanitizesInput;
+use AdamTheHutt\SanitizedRequests\Sanitizer;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreItem extends FormRequest
 {
     use SanitizesInput;
 
-    public function sanitize(): void
+    public function sanitize(Sanitizer $sanitizer): void
     {
-        $this->sanitizer()
-             ->castToInt("user_id")
-             ->castToBoolean("for_sale")
-             ->castToFloat("price")
-             ->forgetIfEmpty("item_description")
-             ->trimWhitespace("nested.*.wildcard.param");
+        $sanitizer->castToInt("user_id")
+                  ->castToBoolean("for_sale")
+                  ->castToFloat("price")
+                  ->forgetIfEmpty("item_description")
+                  ->trimWhitespace("nested.*.wildcard.param");
     }
 }
 ```
