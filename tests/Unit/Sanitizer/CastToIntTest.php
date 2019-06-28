@@ -17,6 +17,6 @@ class CastToIntTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->castToInt("foo");
 
-        $this->assertSame(["foo" => 123], $subject->input);
+        $this->assertSame(["foo" => 123], $subject->getSanitized());
     }
 }

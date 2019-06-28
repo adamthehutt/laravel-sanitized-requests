@@ -17,7 +17,7 @@ class CastToBoolTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->castToBool("foo");
 
-        $this->assertSame(["foo" => true], $subject->input);
+        $this->assertSame(["foo" => true], $subject->getSanitized());
     }
 
     /** @test */
@@ -28,7 +28,7 @@ class CastToBoolTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->castToBool("foo");
 
-        $this->assertSame(["foo" => true], $subject->input);
+        $this->assertSame(["foo" => true], $subject->getSanitized());
     }
 
     /** @test */
@@ -39,7 +39,7 @@ class CastToBoolTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->castToBool("foo");
 
-        $this->assertSame(["foo" => false], $subject->input);
+        $this->assertSame(["foo" => false], $subject->getSanitized());
     }
 
     /** @test */
@@ -50,6 +50,6 @@ class CastToBoolTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->castToBool("foo");
 
-        $this->assertSame(["foo" => false], $subject->input);
+        $this->assertSame(["foo" => false], $subject->getSanitized());
     }
 }

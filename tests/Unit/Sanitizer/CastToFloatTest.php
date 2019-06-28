@@ -17,6 +17,6 @@ class CastToFloatTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->castToFloat("foo");
 
-        $this->assertSame(["foo" => 123.45], $subject->input);
+        $this->assertSame(["foo" => 123.45], $subject->getSanitized());
     }
 }

@@ -15,6 +15,9 @@ class Sanitizer
     /** @var array */
     public $inputDots;
 
+    /** @var array */
+    public $sanitized;
+
     /**
      * Accepts either a form request object or raw input array
      *
@@ -24,13 +27,14 @@ class Sanitizer
     {
         $this->input     = $mixed instanceof FormRequest ? $mixed->all() : $mixed;
         $this->inputDots = Arr::dot($this->input);
+        $this->sanitized = $this->input;
     }
 
     public function forgetIfEmpty(string $dotPath): self
     {
         $this->manipulate($dotPath, function ($value, $key) {
             if (empty($value) || (is_array($value) && empty(array_filter($value)))) {
-                Arr::forget($this->input, $key);
+                Arr::forget($this->sanitized, $key);
             }
         });
 
@@ -39,38 +43,36 @@ class Sanitizer
 
     public function castToInt(string $dotPath): self
     {
-        $this->manipulate($dotPath, function ($value, $key) {
-            Arr::set($this->input, $key, (int) $value);
-        });
-
-        return $this;
+        return $this->typeCast($dotPath, "integer");
     }
 
     public function castToFloat(string $dotPath): self
     {
-        $this->manipulate($dotPath, function ($value, $key) {
-            Arr::set($this->input, $key, (float) $value);
-        });
-
-        return $this;
+        return $this->typeCast($dotPath, "float");
     }
 
     public function castToBool(string $dotPath): self
     {
-        $this->manipulate($dotPath, function ($value, $key) {
-            Arr::set($this->input, $key, (bool) $value);
-        });
+        return $this->typeCast($dotPath, "boolean");
+    }
 
-        return $this;
+    public function castToString(string $dotPath): self
+    {
+        return $this->typeCast($dotPath, "string");
     }
 
     public function trimWhitespace(string $dotPath): self
     {
         $this->manipulate($dotPath, function ($value, $key) {
-            Arr::set($this->input, $key, trim($value));
+            Arr::set($this->sanitized, $key, trim($value));
         });
 
         return $this;
+    }
+
+    public function getSanitized(): array
+    {
+        return $this->sanitized;
     }
 
     private function parseDotPath(string $dotPath): array
@@ -111,5 +113,15 @@ class Sanitizer
             $value = Arr::get($this->input, $key, null);
             $function($value, $key);
         }
+    }
+
+    private function typeCast(string $dotPath, string $type): self
+    {
+        $this->manipulate($dotPath, function ($value, $key) use($type) {
+            settype($value, $type);
+            Arr::set($this->sanitized, $key, $value);
+        });
+
+        return $this;
     }
 }

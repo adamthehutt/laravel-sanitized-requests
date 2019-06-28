@@ -17,7 +17,7 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("foo");
 
-        $this->assertArrayNotHasKey("foo", $subject->input);
+        $this->assertArrayNotHasKey("foo", $subject->getSanitized());
     }
 
     /** @test */
@@ -28,7 +28,7 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("foo.bar.baz");
 
-        $this->assertSame(["foo" => ["bar" => []]], $subject->input);
+        $this->assertSame(["foo" => ["bar" => []]], $subject->getSanitized());
     }
 
     /** @test */
@@ -51,7 +51,7 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("foo.*.baz");
 
-        $this->assertSame(["foo" => ["bar" => [], 'gorilla' => [], 2 => []]], $subject->input);
+        $this->assertSame(["foo" => ["bar" => [], 'gorilla' => [], 2 => []]], $subject->getSanitized());
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("foo.bar");
 
-        $this->assertSame(["foo" => ['gorilla' => ['baz' => ''], 2 => ['baz' => '']]], $subject->input);
+        $this->assertSame(["foo" => ['gorilla' => ['baz' => ''], 2 => ['baz' => '']]], $subject->getSanitized());
     }
 
     /** @test */
@@ -85,7 +85,7 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("abc");
 
-        $this->assertSame(['abc' => '123'], $subject->input);
+        $this->assertSame(['abc' => '123'], $subject->getSanitized());
     }
 
     /** @test */
@@ -96,7 +96,7 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("abc");
 
-        $this->assertSame(['abc' => ['def' => '123']], $subject->input);
+        $this->assertSame(['abc' => ['def' => '123']], $subject->getSanitized());
     }
 
     /** @test */
@@ -120,6 +120,6 @@ class ForgetIfEmptyTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->forgetIfEmpty("abc.*");
 
-        $this->assertSame(['abc' => ['pqr' => ['stu' => 'blah', 'vwx' => 'blah', 'ynz' => 'blah']]], $subject->input);
+        $this->assertSame(['abc' => ['pqr' => ['stu' => 'blah', 'vwx' => 'blah', 'ynz' => 'blah']]], $subject->getSanitized());
     }
 }

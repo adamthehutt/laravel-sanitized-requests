@@ -17,6 +17,6 @@ class TrimWhitespaceTest extends TestCase
         $subject = new Sanitizer($input);
         $subject->trimWhitespace("foo");
 
-        $this->assertSame(["foo" => 'abc'], $subject->input);
+        $this->assertSame(["foo" => 'abc'], $subject->getSanitized());
     }
 }
