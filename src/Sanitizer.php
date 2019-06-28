@@ -14,7 +14,7 @@ class Sanitizer
     /** @var array */
     public $inputDots;
 
-    public function __construct(array $input)
+    public function __construct(array &$input)
     {
         $this->input     = $input;
         $this->inputDots = Arr::dot($input);
