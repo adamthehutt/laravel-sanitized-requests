@@ -1,0 +1,33 @@
+{
+  "name": "adamthehutt/laravel-sanitized-requests",
+  "description": "Sanitize request parameters before validation",
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": ">=7.3",
+    "illuminate/support": ">=5.8",
+    "illuminate/database": ">=5.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "8.2.1",
+    "orchestra/testbench": "^3.8"
+  },
+  "authors": [
+    {
+      "name": "Adam Huttler",
+      "email": "adam.huttler@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "AdamTheHutt\\SanitizedRequests\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AdamTheHutt\\SanitizedRequests\\Tests\\": "tests/"
+    }
+  }
+}
