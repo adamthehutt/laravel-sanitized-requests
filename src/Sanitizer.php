@@ -84,7 +84,7 @@ class Sanitizer
         // Nested trailing wildcard
         } elseif (Str::endsWith($dotPath, ".*")) {
             $parentKey = Str::replaceLast(".*", "", $dotPath);
-            $childKeys = array_keys(Arr::get($this->input, $parentKey));
+            $childKeys = array_keys(Arr::get($this->input, $parentKey, []));
             return array_map(function($key) use ($parentKey) {
                     return $parentKey . '.' . $key;
                 }, $childKeys);
