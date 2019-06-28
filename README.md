@@ -8,7 +8,7 @@ composer require adamthehutt/laravel-sanitized-requests
 
 #### Usage
 Create a Request class and use the ```SanitizesInput``` trait. Then implement
-the ```sanitize(array $input)``` method to clean up user input before it is 
+the ```sanitize(Sanitizer $sanitizer)``` method to clean up user input before it is 
 validated.
 
 ```php
