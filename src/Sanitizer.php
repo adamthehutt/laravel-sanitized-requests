@@ -72,11 +72,21 @@ class Sanitizer
         // Straight key
         if (array_key_exists($dotPath, $this->inputDots)) {
             return [$dotPath];
-        // Wildcard reference
+
+        // Nested trailing wildcard
+        } elseif (Str::endsWith($dotPath, ".*")) {
+            $parentKey = Str::replaceLast(".*", "", $dotPath);
+            $childKeys = array_keys(Arr::get($this->input, $parentKey));
+            return array_map(function($key) use ($parentKey) {
+                    return $parentKey . '.' . $key;
+                }, $childKeys);
+
+        // Lone or inner wildcard
         } elseif (Str::contains($dotPath, "*")) {
             $regex = '^'.str_replace([".", "*"], ["\.", ".+"], $dotPath).'$';
             return preg_grep("/$regex/", array_keys($this->inputDots));
-        // Possible nested array
+
+        // Nested array
         } elseif (Str::contains($dotPath, ".")) {
             $regex = '^'.$dotPath;
             $matches = preg_grep("/$regex/", array_keys($this->inputDots));

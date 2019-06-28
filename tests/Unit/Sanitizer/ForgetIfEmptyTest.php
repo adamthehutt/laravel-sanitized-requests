@@ -98,4 +98,28 @@ class ForgetIfEmptyTest extends TestCase
 
         $this->assertSame(['abc' => ['def' => '123']], $subject->input);
     }
+
+    /** @test */
+    public function it_forgets_an_empty_array_with_trailing_wildcard()
+    {
+        $input = [
+            'abc' => [
+                'def' => [
+                    'ghi' => '',
+                    'jkl' => '',
+                    'mno' => ''
+                ],
+                'pqr' => [
+                    'stu' => 'blah',
+                    'vwx' => 'blah',
+                    'ynz' => 'blah'
+                ]
+            ]
+        ];
+
+        $subject = new Sanitizer($input);
+        $subject->forgetIfEmpty("abc.*");
+
+        $this->assertSame(['abc' => ['pqr' => ['stu' => 'blah', 'vwx' => 'blah', 'ynz' => 'blah']]], $subject->input);
+    }
 }
