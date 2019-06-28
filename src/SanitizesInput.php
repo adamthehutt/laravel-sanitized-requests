@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 /**
  * @mixin   FormRequest
  *
- * @method  sanitize(array $input): void
+ * @method  sanitize(): void
  */
 trait SanitizesInput
 {
@@ -29,7 +29,7 @@ trait SanitizesInput
         $this->sanitizeCopy = $this->all();
         $this->sanitizeDotCopy = Arr::dot($this->sanitizeCopy);
 
-        $this->sanitize($this->sanitizeCopy);
+        $this->sanitize();
         $this->replace($this->sanitizeCopy);
 
         return parent::validationData();
