@@ -12,17 +12,14 @@ use Illuminate\Foundation\Http\FormRequest;
  */
 trait SanitizesInput
 {
-    /** @var array */
-    protected $sanitizeCopy;
-
     protected function validationData()
     {
         $this->sanitizeCopy = $this->all();
 
-        $sanitizer = new Sanitizer($this->sanitizeCopy);
+        $sanitizer = new Sanitizer($this);
         $this->sanitize($sanitizer);
 
-        $this->replace($this->sanitizeCopy);
+        $this->replace($sanitizer->input);
 
         return parent::validationData();
     }

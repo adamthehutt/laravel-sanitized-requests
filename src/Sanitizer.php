@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AdamTheHutt\SanitizedRequests;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -14,10 +15,15 @@ class Sanitizer
     /** @var array */
     public $inputDots;
 
-    public function __construct(array &$input)
+    /**
+     * Accepts either a form request object or raw input array
+     *
+     * @param FormRequest|array $mixed
+     */
+    public function __construct($mixed)
     {
-        $this->input     = $input;
-        $this->inputDots = Arr::dot($input);
+        $this->input     = $mixed instanceof FormRequest ? $mixed->all() : $mixed;
+        $this->inputDots = Arr::dot($this->input);
     }
 
     public function forgetIfEmpty(string $dotPath): self
