@@ -12,13 +12,11 @@ use Illuminate\Foundation\Http\FormRequest;
  */
 trait SanitizesInput
 {
-    protected function validationData()
+    protected function prepareForValidation(): void
     {
         $sanitizer = new Sanitizer($this);
         $this->sanitize($sanitizer);
 
         $this->replace($sanitizer->getSanitized());
-
-        return parent::validationData();
     }
 }
