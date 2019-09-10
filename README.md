@@ -39,4 +39,6 @@ The following sanitize methods are currently supported:
  * castToString($key) - Casts the input value to a string 
  * forgetIfEmpty($key) - Removes from input both empty strings and arrays with 
  only empty values
+ * map($key, $callable) - Applies an arbitrary callback to the input value(s)
  * trimWhitespace($key) - Trims whitespace from a string input value
+ 

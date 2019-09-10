@@ -70,6 +70,15 @@ class Sanitizer
         return $this;
     }
 
+    public function map(string $dotpath, callable $callback): self
+    {
+        $this->manipulate($dotpath, function ($value, $key) use($callback) {
+            Arr::set($this->sanitized, $key, $callback($value));
+        });
+
+        return $this;
+    }
+
     public function getSanitized(): array
     {
         return $this->sanitized;
