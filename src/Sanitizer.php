@@ -13,9 +13,6 @@ class Sanitizer
     public $input;
 
     /** @var array */
-    public $inputDots;
-
-    /** @var array */
     public $sanitized;
 
     /**
@@ -86,14 +83,16 @@ class Sanitizer
 
     private function parseDotPath(string $dotPath): array
     {
+        $inputDots = Arr::dot($this->sanitized);
+
         // Straight key
-        if (array_key_exists($dotPath, $this->inputDots)) {
+        if (array_key_exists($dotPath, $inputDots)) {
             return [$dotPath];
 
         // Nested trailing wildcard
         } elseif (Str::endsWith($dotPath, ".*")) {
             $parentKey = Str::replaceLast(".*", "", $dotPath);
-            $childKeys = array_keys(Arr::get($this->input, $parentKey, []));
+            $childKeys = array_keys(Arr::get($this->sanitized, $parentKey, []));
             return array_map(function($key) use ($parentKey) {
                     return $parentKey . '.' . $key;
                 }, $childKeys);
@@ -101,12 +100,12 @@ class Sanitizer
         // Lone or inner wildcard
         } elseif (Str::contains($dotPath, "*")) {
             $regex = '^'.str_replace([".", "*"], ["\.", ".+"], $dotPath).'$';
-            return preg_grep("/$regex/", array_keys($this->inputDots));
+            return preg_grep("/$regex/", array_keys($inputDots));
 
         // Nested array
         } elseif (Str::contains($dotPath, ".")) {
             $regex = '^'.$dotPath;
-            $matches = preg_grep("/$regex/", array_keys($this->inputDots));
+            $matches = preg_grep("/$regex/", array_keys($inputDots));
             if (count($matches)) {
                 return [$dotPath];
             }
