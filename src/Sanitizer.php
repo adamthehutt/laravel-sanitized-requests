@@ -119,7 +119,7 @@ class Sanitizer
     {
         $keys = $this->parseDotPath($dotPath);
         foreach ($keys as $key) {
-            $value = Arr::get($this->input, $key, null);
+            $value = Arr::get($this->sanitized, $key, null);
             $function($value, $key);
         }
     }
